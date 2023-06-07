@@ -1,16 +1,18 @@
 import sys
 
 import pika
+from pika.exchange_type import ExchangeType
 
 connection = pika.BlockingConnection(pika.ConnectionParameters("localhost"))
 channel = connection.channel()
 
-channel.queue_declare(queue="task_queue", durable=True)
+channel.exchange_declare(exchange="logs",
+                         exchange_type=ExchangeType.fanout)
 
 message = " ".join(sys.argv[1:]) or "Hello World!"
 channel.basic_publish(
-    exchange="",
-    routing_key="hello",
+    exchange="logs",
+    routing_key="",
     body=message,
     properties=pika.BasicProperties(
         delivery_mode=2
