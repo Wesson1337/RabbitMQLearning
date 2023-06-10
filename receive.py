@@ -1,7 +1,4 @@
-import time
-
 import pika
-from pika.adapters.blocking_connection import BlockingChannel
 
 connection = pika.BlockingConnection(
     pika.ConnectionParameters(host='localhost'))
